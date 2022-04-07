@@ -94,8 +94,12 @@ class BlockTypes {
 	protected static function create_attributes_fields( $attributes, $prefix ) {
 		$fields = [];
 
-		foreach ( $attributes as $name => $attribute ) {
-			$type = self::get_attribute_type( $name, $attribute, $prefix );
+		foreach ($attributes as $name => $attribute) {
+			if ($name == 'templateLock') {
+				continue;
+			}
+
+			$type = self::get_attribute_type($name, $attribute, $prefix);
 
 			if ( isset( $type ) ) {
 				$default_value = $attribute['default'] ?? null;
