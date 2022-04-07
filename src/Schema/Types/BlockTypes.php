@@ -94,6 +94,10 @@ class BlockTypes {
 		$fields = [];
 
 		foreach ($attributes as $name => $attribute) {
+			if ($name == 'templateLock') {
+				continue;
+			}
+
 			$type = self::get_attribute_type($name, $attribute, $prefix);
 
 			if (isset($type)) {
