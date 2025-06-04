@@ -58,6 +58,7 @@ class Block implements ArrayAccess {
 
 			switch ( $source ) {
 				case 'html':
+				case 'raw':
 					$source_node = ! empty( $value['selector'] ) ? $node->findOne( $value['selector'] ) : $node;
 
 					if ( $source_node ) {
@@ -92,6 +93,7 @@ class Block implements ArrayAccess {
 					}
 					break;
 				case 'text':
+				case 'rich-text':
 					$source_node = $value['selector'] ? $node->findOne( $value['selector'] ) : $node;
 
 					if ( $source_node ) {
@@ -165,7 +167,7 @@ class Block implements ArrayAccess {
 
 			if ( $result->isValid() ) {
 				// Avoid empty HTML, which can trigger an error on PHP 8.
-				$html = empty( $data['innerHTML'] ) ? '<!-- -->' : $data['innerHTML'];
+				$html = empty( $data['fullHTML'] ) ? '<!-- -->' : $data['fullHTML'];
 				return [
 					'attributes' => array_merge(
 						self::source_attributes( HtmlDomParser::str_get_html( $html ), $type ),
@@ -207,6 +209,7 @@ class Block implements ArrayAccess {
 			return $parent;
 		};
 
+		$data['fullHTML'] = $this->saveContent;
 		$result = self::parse_attributes( $data, $this->blockType );
 
 		$this->attributes     = $result['attributes'];
